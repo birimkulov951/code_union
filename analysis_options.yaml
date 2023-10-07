@@ -1,0 +1,6 @@
+include: package:my_lints/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - lib/**/*.g.dart
+    - lib/**/*.config.dart

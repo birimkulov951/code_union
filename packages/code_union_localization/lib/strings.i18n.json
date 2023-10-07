@@ -1,0 +1,22 @@
+{
+  "applicationName": "CodeUnion",
+  "main": {
+    "tabs": {
+      "home": "Home",
+      "map": "Map",
+      "favorites": "Favorites",
+      "profile": "Profile"
+    }
+  },
+  "authentication": {
+    "authentication": "Authentication",
+    "logInOrEmail": "Log in or Email",
+    "password": "Password",
+    "logIn": "Log In",
+    "signIn": "Sign In"
+  },
+  "profile": {
+    "profile": "Profile",
+    "Exit": "Exit"
+  }
+}

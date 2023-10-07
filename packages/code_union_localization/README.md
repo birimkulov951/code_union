@@ -1,0 +1,1 @@
+This package contains Code Union app localization.

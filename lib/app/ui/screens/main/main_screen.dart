@@ -2,8 +2,12 @@ import 'package:code_union/app/ui/screens/main/favorites/favorites_screen.dart';
 import 'package:code_union/app/ui/screens/main/home/home_screen.dart';
 import 'package:code_union/app/ui/screens/main/map/map_screen.dart';
 import 'package:code_union/app/ui/screens/main/profile/profile_screen.dart';
+import 'package:code_union/app/ui/screens/main/profile/profile_screen_view_model.dart';
 import 'package:code_union/app/ui/screens/main/widgets/bottom_navigation.dart';
+import 'package:code_union/core/di/inject.dart';
+import 'package:code_union/domain/bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({
@@ -28,11 +32,18 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: const [
-          HomeScreen(),
-          MapScreen(),
-          FavoritesScreen(),
-          ProfileScreen(),
+        children: [
+          const HomeScreen(),
+          const MapScreen(),
+          const FavoritesScreen(),
+          BlocProvider(
+            create: (_) => ProfileBloc(
+              inject(),
+            ),
+            child: ProfileScreen(
+              viewModel: ProfileScreenViewModel(),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: CUBottomNavigationBar(

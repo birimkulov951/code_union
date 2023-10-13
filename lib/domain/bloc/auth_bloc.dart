@@ -20,22 +20,20 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   final TokenRepository _tokenRepository;
 
   Future<void> _authenticate(
-    AuthEvent event,
+    AuthenticateAuthEvent event,
     Emitter<AuthState> emit,
   ) async {
     emit(AuthStateLoading());
     try {
-      if (event is AuthenticateAuthEvent) {
-        final data = await _authRepository.authenticate(event.authReqData);
+      final data = await _authRepository.authenticate(event.authReqData);
 
-        final TokenData tokenData = TokenData(
-          accessToken: data.accessToken,
-          refreshToken: data.refresherToken,
-        );
-        await _tokenRepository.saveToken(tokenData);
+      final TokenData tokenData = TokenData(
+        accessToken: data.accessToken,
+        refreshToken: data.refresherToken,
+      );
+      await _tokenRepository.saveToken(tokenData);
 
-        emit(AuthStateSuccess(data));
-      }
+      emit(AuthStateSuccess(data));
     } on Object catch (e) {
       emit(AuthStateFail(e.toString()));
     }

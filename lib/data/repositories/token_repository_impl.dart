@@ -24,4 +24,9 @@ class TokenRepositoryImpl implements TokenRepository {
     final token = await _storage.getToken();
     return 'Bearer ${token!.accessToken}';
   }
+
+  @override
+  Future<void> deleteToken() async {
+    await _storage.deleteToken();
+  }
 }

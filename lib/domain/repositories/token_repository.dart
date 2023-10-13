@@ -7,7 +7,8 @@ abstract class TokenRepository {
 
   Future<String> getBearerToken();
 
+ Future<void> deleteToken();
+
 // can be implemented later
 // Future<TokenData> refreshToken(TokenData token);
-// Future<void> deleteToken();
 }

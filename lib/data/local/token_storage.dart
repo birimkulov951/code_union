@@ -33,4 +33,8 @@ class TokenStorage {
       refreshToken: refreshToken,
     );
   }
+
+  Future<void> deleteToken() async {
+    await _secureStorage.deleteAll();
+  }
 }

@@ -1,12 +1,14 @@
+import 'package:app_ui_kit/ui_kit.dart';
 import 'package:code_union/app/ui/screens/auth/auth_screen_view_model.dart';
+import 'package:code_union/domain/bloc/auth_bloc.dart';
 import 'package:code_union/domain/entities/auth_req_data.dart';
-import 'package:code_union/library/resource/colors.dart';
-import 'package:code_union/library/resource/typography.dart';
+import 'package:code_union/domain/state/auth_state.dart';
 import 'package:code_union_localization/strings.g.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-const _paddingOne = 10.0;
-const _paddingTwo = 50.0;
+const _paddingTen = 10.0;
+const _paddingTwenty = 20.0;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({
@@ -21,47 +23,75 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final emailFocus = FocusNode();
+  final passwordFocus = FocusNode();
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      body: Center(
-        child: Column(
-          children: [
-            const Icon(
-              IconData(
-                0xf04be,
-                fontFamily: 'MaterialIcons',
-              ),
-            ),
-            const SizedBox(height: _paddingTwo),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Use textEditingController texts
-                const AuthReqData authReqData = AuthReqData(
-                  email: 'maripbekoff@gmail.com',
-                  password: 'adminadmin',
-                );
-
-                widget.viewModel.login(context, authReqData);
-              },
-              child: Text(
-                context.t.authentication.logIn,
-                style: AppTypography.text,
-              ),
-            ),
-            const SizedBox(height: _paddingOne),
-            ElevatedButton(
-              onPressed: () {
-                widget.viewModel.signIn(context);
-              },
-              child: Text(
-                context.t.authentication.signIn,
-                style: AppTypography.text,
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          context.t.authentication.authentication,
         ),
+      ),
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (BuildContext context, AuthState state) {
+          if (state is AuthStateSuccess) {
+            widget.viewModel.gotoMainScreen(context);
+          }
+          if (state is AuthStateFail) {
+            widget.viewModel.showErrorMessage(context, state.errorText);
+          }
+        },
+        buildWhen: (_, state) => state is AuthStateInitial,
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OrdinaryInput(
+                    focusNode: emailFocus,
+                    controller: emailController,
+                  ),
+                  OrdinaryInput(
+                    focusNode: passwordFocus,
+                    controller: passwordController,
+                  ),
+                  const SizedBox(height: _paddingTwenty),
+                  OrdinaryButton(
+                    text: context.t.authentication.logIn,
+                    onTap: () {
+                      final authReqData = AuthReqData(
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
+
+                      widget.viewModel.login(context, authReqData);
+                    },
+                  ),
+                  const SizedBox(height: _paddingTen),
+                  OrdinaryButton(
+                    text: context.t.authentication.signIn,
+                    onTap: () {
+                      widget.viewModel.showErrorMessage(context, 'TODO');
+                    },
+                  ),
+                ],
+              ),
+              if (state is AuthStateLoading) const FullProgressIndicator(),
+            ],
+          );
+        },
       ),
     );
   }

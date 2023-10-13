@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:code_union/app/navigation/app_route.dart';
 import 'package:code_union/domain/entities/token_data.dart';
 import 'package:code_union/domain/repositories/token_repository.dart';
@@ -16,10 +18,11 @@ class SplashScreenViewModel {
   void checkUserAuth(BuildContext context) async {
     // TODO: rewrite with BloC
     final TokenData? tokenData = await _tokenRepository.getToken();
+    log('isAuthenticated: $tokenData');
     if (tokenData != null) {
-      gotoAuthScreen(context);
-    } else {
       gotoMainScreen(context);
+    } else {
+      gotoAuthScreen(context);
     }
   }
 

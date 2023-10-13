@@ -10,8 +10,8 @@ part 'auth_api.g.dart';
 @singleton
 abstract class AuthApi {
   @factoryMethod
-  factory AuthApi(Dio dio) = _AuthApi;
+  factory AuthApi(@Named("Unauthorized") Dio dio) = _AuthApi;
 
   @POST('/api/v1/auth/login')
-  Future<AuthResponse> authenticate(AuthRequest request);
+  Future<AuthResponse> authenticate(@Body() AuthRequest request);
 }

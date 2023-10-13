@@ -5,8 +5,9 @@ import 'package:code_union/domain/repositories/token_repository.dart';
 import 'package:dio/dio.dart';
 
 const _baseHeaders = {
-  'Content-Type': 'application/json',
+  'contentType': 'application/json',
   'charset': 'utf-8',
+  'accept': '*/*',
 };
 
 class UnauthorizedRequestInterceptor extends QueuedInterceptor {

@@ -10,7 +10,15 @@ class AuthStateInitial extends AuthState {}
 
 class AuthStateLoading extends AuthState {}
 
-class AuthStateFail extends AuthState {}
+class AuthStateFail extends AuthState {
+  AuthStateFail(this.errorText);
+
+  final String errorText;
+
+  @override
+  List<Object> get props => [errorText];
+
+}
 
 class AuthStateSuccess extends AuthState {
   AuthStateSuccess(this.authData);

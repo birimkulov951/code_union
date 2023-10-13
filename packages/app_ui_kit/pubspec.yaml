@@ -1,0 +1,17 @@
+name: app_ui_kit
+description: App ui kit package
+
+environment:
+  sdk: '>=3.1.1 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  my_lints:
+    git:
+      url: https://github.com/birimkulov951/my_lints
+  flutter_lints: ^2.0.0

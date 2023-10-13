@@ -4,25 +4,25 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
 const _baseUrl = "http://45.10.110.181:8080";
-const _requestTimeOutInSeconds = Duration(seconds: 15);
+const _requestTimeOutInSeconds = Duration(seconds: 5);
 
 @module
 abstract class DioModule {
-  @singleton
-  Dio getAuthorizedDioClient(TokenRepository tokenRepository) {
-    final dioClient = _dioClient();
-    dioClient.interceptors.addAll([
-      AuthorizedRequestInterceptor(tokenRepository),
-    ]);
-    return dioClient;
-  }
-
   @Named('Unauthorized')
   @singleton
   Dio getUnauthorizedDioClient() {
     final dioClient = _dioClient();
     dioClient.interceptors.addAll([
       UnauthorizedRequestInterceptor(),
+    ]);
+    return dioClient;
+  }
+
+  @singleton
+  Dio getAuthorizedDioClient(TokenRepository tokenRepository) {
+    final dioClient = _dioClient();
+    dioClient.interceptors.addAll([
+      AuthorizedRequestInterceptor(tokenRepository),
     ]);
     return dioClient;
   }

@@ -36,8 +36,8 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
 
         emit(AuthStateSuccess(data));
       }
-    } on Object catch (_) {
-      emit(AuthStateFail());
+    } on Object catch (e) {
+      emit(AuthStateFail(e.toString()));
     }
   }
 }

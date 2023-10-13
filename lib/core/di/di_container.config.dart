@@ -12,11 +12,12 @@
 import 'package:code_union/core/dio/dio_module.dart' as _i11;
 import 'package:code_union/data/local/local_module.dart' as _i12;
 import 'package:code_union/data/local/token_storage.dart' as _i5;
-import 'package:code_union/data/remote/auth_api.dart' as _i8;
-import 'package:code_union/data/repositories/auth_repository_impl.dart' as _i10;
-import 'package:code_union/data/repositories/token_repository_impl.dart' as _i7;
-import 'package:code_union/domain/repositories/auth_repository.dart' as _i9;
-import 'package:code_union/domain/repositories/token_repository.dart' as _i6;
+import 'package:code_union/data/remote/auth_api.dart' as _i6;
+import 'package:code_union/data/repositories/auth_repository_impl.dart' as _i8;
+import 'package:code_union/data/repositories/token_repository_impl.dart'
+    as _i10;
+import 'package:code_union/domain/repositories/auth_repository.dart' as _i7;
+import 'package:code_union/domain/repositories/token_repository.dart' as _i9;
 import 'package:dio/dio.dart' as _i3;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i4;
 import 'package:get_it/get_it.dart' as _i1;
@@ -43,14 +44,13 @@ extension GetItInjectableX on _i1.GetIt {
         () => localModule.createSecureStorage());
     gh.factoryAsync<_i5.TokenStorage>(() async =>
         _i5.TokenStorage(await getAsync<_i4.FlutterSecureStorage>()));
-    gh.singletonAsync<_i6.TokenRepository>(() async =>
-        _i7.TokenRepositoryImpl(await getAsync<_i5.TokenStorage>()));
+    gh.singleton<_i6.AuthApi>(
+        _i6.AuthApi(gh<_i3.Dio>(instanceName: 'Unauthorized')));
+    gh.singleton<_i7.AuthRepository>(_i8.AuthRepositoryImpl(gh<_i6.AuthApi>()));
+    gh.singletonAsync<_i9.TokenRepository>(() async =>
+        _i10.TokenRepositoryImpl(await getAsync<_i5.TokenStorage>()));
     gh.singletonAsync<_i3.Dio>(() async => dioModule
-        .getAuthorizedDioClient(await getAsync<_i6.TokenRepository>()));
-    gh.singletonAsync<_i8.AuthApi>(
-        () async => _i8.AuthApi(await getAsync<_i3.Dio>()));
-    gh.singletonAsync<_i9.AuthRepository>(
-        () async => _i10.AuthRepositoryImpl(await getAsync<_i8.AuthApi>()));
+        .getAuthorizedDioClient(await getAsync<_i9.TokenRepository>()));
     return this;
   }
 }
